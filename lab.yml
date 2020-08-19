@@ -20,7 +20,7 @@
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
   - name: Terraform refresh
-    command: terraform refresh
+    command: terraform refresh -target=output.bastion_ip
 
 - name: Zypper update
   hosts: all
