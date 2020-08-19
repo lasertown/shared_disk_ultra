@@ -17,13 +17,15 @@
       state: present
       block: |
         alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
-  - name: Configure local alias
+  - name: Set bastion env variable
+    shell: bastion_ip=`terraform output bastion_ip`
+    - name: Configure dynamic inventory file
     blockinfile:
       path: ./myazure_rm.yml
       state: present
       block: |
         include_vm_resource_groups:
-        - "{{ module.rg0.rg }}"
+        - "{{ lookup('env','bastion_ip') }}"
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
 
