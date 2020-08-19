@@ -17,6 +17,13 @@
       state: present
       block: |
         alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
+  - name: Configure local alias
+    blockinfile:
+      path: ./myazure_rm.yml
+      state: present
+      block: |
+        include_vm_resource_groups:
+        - {{ module.rg0.rg }}
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
 
