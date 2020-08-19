@@ -12,7 +12,7 @@ module "network0" {
 module "bastion0" {
 source = "./modules/bastion"
 rg = module.rg0.rg
-region = "westus2"
+region = module.network0.network.name
 publisher = "SUSE"
 offer = "sles-sap-12-sp5"
 sku = "gen2"
