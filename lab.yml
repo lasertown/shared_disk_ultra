@@ -18,7 +18,7 @@
       block: |
         alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
   - name: Set bastion env variable
-    shell: echo "rg":"`terraform output rg`" > rg.yaml 
+    shell: echo \"rg\":\"`terraform output rg`\" > rg.yaml 
   - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
     include_vars:
       file: rg.yaml
