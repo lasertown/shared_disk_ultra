@@ -17,10 +17,10 @@
       state: present
       block: |
         alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
-  - name: Terraform refresh
-    command: terraform refresh
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
+  - name: Terraform refresh
+    command: terraform refresh
 
 - name: Zypper update
   hosts: all
