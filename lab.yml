@@ -20,7 +20,7 @@
   - name: Terraform refresh
     shell: terraform refresh ; . ~/.bashrc
   - name: Set bastion env variable
-    shell: echo { \"rg\":\"`terraform output rg`\" } > rg.yaml 
+    shell: echo { \"rg\":\"`terraform output rg`\" } > rg.json
   - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
     include_vars:
       file: rg.json
