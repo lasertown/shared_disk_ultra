@@ -109,6 +109,10 @@ resource "azurerm_linux_virtual_machine" "node-0" {
         username       = "azureadmin"
         public_key     = file("~/.ssh/lab_rsa.pub")
     }
+    
+    tags = {
+    group = "node0"
+    }
 }
 
 resource "azurerm_managed_disk" "node-0a" {
@@ -190,6 +194,10 @@ resource "azurerm_linux_virtual_machine" "node-1" {
     admin_ssh_key {
         username       = "azureadmin"
         public_key     = file("~/.ssh/lab_rsa.pub")
+    }
+
+    tags = {
+    group = "node1"
     }
 }
 
