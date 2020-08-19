@@ -18,18 +18,18 @@
       block: |
         alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
   - name: Set bastion env variable
-    shell: echo rg:`terraform output rg` > rg.yaml 
+    shell: echo "rg":"`terraform output rg`" > rg.yaml 
   - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
     include_vars:
       file: rg.yaml
-      name: rg
+      name: stuff
   - name: Configure dynamic inventory file
     blockinfile:
       path: ./myazure_rm.yml
       state: present
       block: |
         include_vm_resource_groups:
-        - {{ rg }}
+        - {{ stuff["rg"] }}
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
 
