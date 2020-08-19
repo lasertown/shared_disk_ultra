@@ -79,10 +79,10 @@ resource "azurerm_linux_virtual_machine" bastion {
     }
 
     source_image_reference {
-        publisher = "SUSE"
-        offer     = "sles-sap-12-sp5"
-        sku       = "gen2"
-        version   = "latest"
+        publisher = var.publisher
+        offer     = var.offer
+        sku       = var.sku
+        version   = var._region
     }
 
     computer_name  = "bastion-${var.region}"
