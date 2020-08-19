@@ -95,7 +95,7 @@ resource "azurerm_linux_virtual_machine" bastion {
     }
 }
 
-data "azurerm_public_ip" "example" {
+data "azurerm_public_ip" "ip" {
   name                = azurerm_public_ip.ip.name
   resource_group_name = var.rg
 }
