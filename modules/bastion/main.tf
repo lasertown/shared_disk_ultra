@@ -95,6 +95,15 @@ resource "azurerm_linux_virtual_machine" bastion {
     }
 }
 
+data "azurerm_public_ip" "example" {
+  name                = azurerm_public_ip.ip.name
+  resource_group_name = var.rg
+}
+
+output "public_ip_address" {
+  value = data.azurerm_public_ip.ip.ip_address
+}
+
 resource "local_file" "bastion" {
     content  = azurerm_public_ip.ip.ip_address
     filename = "${path.root}/bastion-${var.region}.ip"
