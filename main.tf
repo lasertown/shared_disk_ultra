@@ -1,0 +1,33 @@
+- name: Create lab environment
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: Generate SSH keys
+    openssh_keypair:
+      path: ~/.ssh/lab_rsa
+  - name: Copy SSH config to localhost
+    copy:
+      src: ssh.config/ssh.config
+      dest: ~/.ssh/config
+  - name: Terraform apply
+    terraform:
+      lock: no
+      force_init: true
+      project_path: './'
+      state: present
+  - name: Configure local alias
+    blockinfile:
+      path: ~/.bashrc
+      state: present
+      block: |
+        alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
+  - name: Refresh inventory to ensure new instances exist in inventory
+    meta: refresh_inventory
+
+- name: Zypper update
+  hosts: all
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Zypper update
+    command: sudo zypper ref
