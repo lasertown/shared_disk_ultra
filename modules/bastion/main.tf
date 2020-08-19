@@ -42,7 +42,7 @@ resource "azurerm_network_interface" "nic" {
 
     ip_configuration {
         name                          = "bastion-public"
-        subnet_id                     = azurerm_subnet.subnet.id
+        subnet_id                     = var.subnet
         private_ip_address_allocation = "Static"
         private_ip_address            = "10.0.0.101"
         public_ip_address_id          = azurerm_public_ip.ip.id
@@ -51,7 +51,7 @@ resource "azurerm_network_interface" "nic" {
 
     ip_configuration {
         name                          = "bastion-private"
-        subnet_id                     = azurerm_subnet.subnet.id
+        subnet_id                     = var.subnet
         private_ip_address_allocation = "Static"
         private_ip_address            = "10.0.0.100"
     }
