@@ -53,7 +53,7 @@ resource "azurerm_network_interface" "node-0" {
 
     ip_configuration {
         name                          = "node-0-private"
-        subnet_id                     = azurerm_subnet.example.id
+        subnet_id                     = var.subnet
         private_ip_address_allocation = "Static"
         private_ip_address            = "10.0.0.6"
         primary                       = "true"
@@ -66,7 +66,7 @@ resource "azurerm_network_interface" "node-1" {
 
     ip_configuration {
         name                          = "node-1-private"
-        subnet_id                     = azurerm_subnet.example.id
+        subnet_id                     = var.subnet
         private_ip_address_allocation = "Static"
         private_ip_address            = "10.0.0.7"
         primary                       = "true"
