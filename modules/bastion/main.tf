@@ -22,7 +22,7 @@ resource "azurerm_network_security_group" "ssh" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "nsga" {
-  subnet_id                 = var.subnet.id
+  subnet_id                 = var.subnet
   network_security_group_id = azurerm_network_security_group.ssh.id
 }
 
