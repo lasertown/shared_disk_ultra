@@ -19,7 +19,7 @@
         alias bastion-uswest2='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip_westus2`'
   - name: Set bastion env variable
     shell: bastion_ip=`terraform output bastion_ip`
-    - name: Configure dynamic inventory file
+  - name: Configure dynamic inventory file
     blockinfile:
       path: ./myazure_rm.yml
       state: present
