@@ -98,7 +98,7 @@ resource "azurerm_linux_virtual_machine" bastion {
 data "azurerm_public_ip" "ip" {
   name                = azurerm_public_ip.ip.name
   resource_group_name = var.rg
-  depends_on = [azurerm_public_ip.ip]
+  depends_on = [azurerm_public_ip.ip.ip_address]
 }
 
 output "public_ip_address" {
