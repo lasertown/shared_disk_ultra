@@ -77,16 +77,6 @@ resource "azurerm_network_interface" "node-1" {
     }
 }
 
-# Connect the security group to the network interface
-resource "azurerm_network_interface_security_group_association" "node-0" {
-    network_interface_id      = azurerm_network_interface.node-0.id
-    network_security_group_id = azurerm_network_security_group.ssh.id
-}
-resource "azurerm_network_interface_security_group_association" "node-1" {
-    network_interface_id      = azurerm_network_interface.node-1.id
-    network_security_group_id = azurerm_network_security_group.ssh.id
-}
-
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "node-0" {
     name                  = "node-0"
