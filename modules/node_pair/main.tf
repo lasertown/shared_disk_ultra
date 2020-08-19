@@ -1,3 +1,7 @@
+provider "azurerm" {
+  features {}
+}
+
 resource "null_resource" "shared_disk0" {
   provisioner "local-exec" {
     command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 256 -l westcentralus --max-shares 2"
