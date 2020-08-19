@@ -82,7 +82,7 @@ resource "azurerm_linux_virtual_machine" bastion {
         publisher = var.publisher
         offer     = var.offer
         sku       = var.sku
-        version   = var._region
+        version   = var._version
     }
 
     computer_name  = "bastion-${var.region}"
