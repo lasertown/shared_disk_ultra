@@ -6,7 +6,7 @@ module "rg0" {
 module "network0" {
     source = "./modules/network"
     rg = module.rg0.rg
-    region = "westus2"
+    region = "westcentralus"
 }
 
 module "bastion0" {
