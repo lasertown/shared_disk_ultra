@@ -5,10 +5,6 @@
   - name: Generate SSH keys
     openssh_keypair:
       path: ~/.ssh/lab_rsa
-  - name: Copy SSH config to localhost
-    copy:
-      src: ssh.config/ssh.config
-      dest: ~/.ssh/config
   - name: Terraform apply
     terraform:
       lock: no
