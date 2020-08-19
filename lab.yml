@@ -23,7 +23,7 @@
       state: present
       block: |
         include_vm_resource_groups:
-        - {{ module.rg0.rg }}
+        - "{{ module.rg0.rg }}"
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
 
