@@ -17,11 +17,13 @@
       state: present
       block: |
         alias bastion='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip`'
+  - name: Zypper refresh
+    command: zypper refresh ; . ~/.bashrc
   - name: Set bastion env variable
     shell: echo { \"rg\":\"`terraform output rg`\" } > rg.yaml 
   - name: Include vars of stuff.yaml into the 'stuff' variable (2.2).
     include_vars:
-      file: rg.yaml
+      file: rg.json
       name: stuff
   - name: Configure dynamic inventory file
     blockinfile:
