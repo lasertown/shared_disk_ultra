@@ -3,5 +3,5 @@ output "bastion_ip" {
 }
 
 output "rg" {
-  value = module.resource_group.rg
+  value = module.rg0.rg
 }
