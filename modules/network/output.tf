@@ -1,3 +1,3 @@
-output "rg" {
-  value = azurerm_resource_group.rg.name
+output "subnet" {
+  value = azurerm_subnet.subnet.id
 }
