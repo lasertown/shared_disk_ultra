@@ -63,3 +63,14 @@
         # Cluster nodes
         10.0.0.6 node0
         10.0.0.7 node1
+
+- name: Push SSH config
+  hosts: all
+  remote_user: azureadmin
+  tasks:
+  - name: Push SSH config to all VMs
+    copy:
+      src: ssh.config/ssh.config
+      dest: /home/azureadmin/.ssh/config
+      owner: azureadmin
+      group: users
