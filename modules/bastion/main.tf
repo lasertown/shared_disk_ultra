@@ -93,6 +93,10 @@ resource "azurerm_linux_virtual_machine" bastion {
         username       = "azureadmin"
         public_key     = file("~/.ssh/lab_rsa.pub")
     }
+    
+    tags = {
+    group = "bastion"
+    }
 }
 
 data "azurerm_public_ip" "ip" {
