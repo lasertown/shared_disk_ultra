@@ -74,3 +74,116 @@
       dest: /home/azureadmin/.ssh/config
       owner: azureadmin
       group: users
+
+- name: Push root SSH keys to nodes
+  hosts: tag_group_node0 tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Create /root/.ssh directory
+    file:
+      path: /root/.ssh/
+      state: directory
+      mode: '0700'
+  - name: Copy root private key
+    copy:
+      src: ~/.ssh/lab_rsa
+      dest: /root/.ssh/id_rsa
+      owner: root
+      group: root
+      mode: '0600'
+  - name: Copy root public key to authorized keys
+    copy:
+      src: ~/.ssh/lab_rsa.pub
+      dest: /root/.ssh/authorized_keys
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy root public key to .ssh
+    copy:
+      src: ~/.ssh/lab_rsa.pub
+      dest: /root/.ssh/id_rsa.pub
+      owner: root
+      group: root
+      mode: '0644'
+
+- name: Configure NFS nodes
+  hosts: tag_group_node0 tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Enable iscsid
+    service:
+      name: iscsid
+      enabled: yes
+  - name: Enable iscsi
+    service:
+      name: iscsi
+      enabled: yes
+  - name: Enable sbd
+    command: sudo systemctl enable sbd
+  - name: Change initiator name
+    copy:
+      src: nfs.config/{{ initiator_config }}
+      dest: /etc/iscsi/initiatorname.iscsi
+      owner: root
+      group: root
+  - name: Start iscsid
+    service:
+      name: iscsid
+      state: restarted
+  - name: Start iscsi
+    service:
+      name: iscsi
+      state: restarted
+  - name: Retrieve IDs of iSCSI devices, Create the SBD devices, Adapt the SBD config
+    script: nfs.config/nfs.sbd.config.py
+    args:
+      executable: python
+      creates: /etc/delete.to.retry.nfs.sbd.config.py
+  - name: Create the softdog configuration file
+    copy:
+      src: nfs.config/nfs.softdog.config
+      dest: /etc/modules-load.d/softdog.conf   
+  - name: Load softdog module
+    command: sudo modprobe -v softdog
+  - name: Registercloudguest
+    command: sudo registercloudguest --force-new
+  - name: Zypper update
+    command: sudo zypper up -y --skip-interactive
+  - name: Install socat
+    zypper:
+      name: socat
+      state: present
+  - name: Install resource-agents
+    zypper:
+      name: resource-agents
+      state: present
+  - name: Configure systemd
+    copy:
+      src: nfs.config/nfs.systemd.config
+      dest: /etc/systemd/system.conf
+      owner: root
+      group: root  
+      mode: '0644'
+  - name: Reload daemon-reload
+    command: sudo systemctl daemon-reload 
+  - name: Configure systemd
+    copy:
+      src: nfs.config/nfs.sysctl.config
+      dest: /etc/sysctl.conf
+      owner: root
+      group: root  
+      mode: '0644'
+  - name: Configure interface
+    run_once: true
+    copy:
+      src: nfs.config/nfs.interface.config
+      dest: /etc/sysconfig/network/ifcfg-eth0
+      owner: root
+      group: root  
+      mode: '0644'
+  - name: Install fence-agents
+    zypper:
+      name: fence-agents
+      state: present
