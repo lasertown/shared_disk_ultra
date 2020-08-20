@@ -42,3 +42,24 @@
   tasks:
   - name: Zypper update
     command: sudo zypper ref
+
+- name: Push SSH key to bastion
+  hosts: tag_group_bastion
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Push SSH azureadmin private key
+    copy:
+      src: ~/.ssh/lab_rsa
+      dest: /home/azureadmin/.ssh/id_rsa
+      mode: '0600'
+      owner: azureadmin
+      group: users
+  - name: Configure etc hosts
+    blockinfile:
+      path: /etc/hosts
+      state: present
+      block: |
+        # Cluster nodes
+        10.0.0.6 node0
+        10.0.0.7 node1
