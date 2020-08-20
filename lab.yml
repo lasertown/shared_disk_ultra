@@ -147,10 +147,6 @@
       dest: /etc/modules-load.d/softdog.conf   
   - name: Load softdog module
     command: sudo modprobe -v softdog
-  - name: Registercloudguest
-    command: sudo registercloudguest --force-new
-  - name: Zypper update
-    command: sudo zypper up -y --skip-interactive
   - name: Install socat
     zypper:
       name: socat
