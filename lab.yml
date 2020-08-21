@@ -263,7 +263,17 @@
         '  Address for ring0': ''
   - name: Update corosync config
     copy:
-      src: nfs.config/nfs.corosync.config
+      src: node.config/node.corosync.config
       dest: /etc/corosync/corosync.conf
   - name: Restart corosync
     command: sudo service corosync restart
+
+- name: Configure node0
+  hosts: tag_group_node0
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Configure stonith device
+    script: node.config/node.stonith.config.sh
+    args:
+      creates: /etc/delete.to.retry.node.stonith.config.sh
