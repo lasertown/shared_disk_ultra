@@ -119,6 +119,18 @@
       owner: root
       group: root
 
+- name: Set initiator name node1
+  hosts: tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Change initiator name
+    copy:
+      src: nfs.config/node1.initiator.config
+      dest: /etc/iscsi/initiatorname.iscsi
+      owner: root
+      group: root
+
 - name: Configure NFS nodes
   hosts: tag_group_node0 tag_group_node1
   remote_user: azureadmin
