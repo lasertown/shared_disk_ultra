@@ -41,7 +41,7 @@
   become: yes
   tasks:
   - name: Zypper update
-    command: sudo zypper ref
+    command: sudo zypper up -y --skip-interactive
 
 - name: Push SSH key to bastion
   hosts: tag_group_bastion
