@@ -1,3 +1,3 @@
-output "public_ip" {
-  value = data.azurerm_public_ip.ip.ip_address
+output "bastion_ip" {
+  value = module.bastion0.public_ip
 }
