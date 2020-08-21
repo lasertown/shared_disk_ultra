@@ -116,30 +116,6 @@
         # IP address of the second cluster node
         10.0.0.7 node-1
 
-- name: Set initiator name node0
-  hosts: tag_group_node0
-  remote_user: azureadmin
-  become: yes
-  tasks:
-  - name: Change initiator name
-    copy:
-      src: node.config/node0.initiator.config
-      dest: /etc/iscsi/initiatorname.iscsi
-      owner: root
-      group: root
-
-- name: Set initiator name node1
-  hosts: tag_group_node1
-  remote_user: azureadmin
-  become: yes
-  tasks:
-  - name: Change initiator name
-    copy:
-      src: node.config/node1.initiator.config
-      dest: /etc/iscsi/initiatorname.iscsi
-      owner: root
-      group: root
-
 - name: Configure nodes
   hosts: tag_group_node0 tag_group_node1
   remote_user: azureadmin
