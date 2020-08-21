@@ -13,6 +13,6 @@ resource "azurerm_subnet" "subnet" {
   name                 =  var.region
   virtual_network_name =  var.region
   resource_group_name  =  var.rg
-  address_prefix       = "10.0.0.0/24"
+  address_prefixes       = "10.0.0.0/24"
   depends_on = [ azurerm_virtual_network.network ]
 }
