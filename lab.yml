@@ -18,7 +18,7 @@
       block: |
         alias bastion='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip`'
   - name: Terraform refresh
-    shell: terraform refresh ; . ~/.bashrc
+    shell: terraform refresh ; export ANSIBLE_STDOUT_CALLBACK=debug; . ~/.bashrc
   - name: Set bastion env variable
     shell: echo { \"rg\":\"`terraform output rg`\" } > rg.json
   - name: Include vars of stuff.yaml into the 'stuff' variable
