@@ -114,7 +114,7 @@
   tasks:
   - name: Change initiator name
     copy:
-      src: nfs.config/node0.initiator.config
+      src: node.config/node0.initiator.config
       dest: /etc/iscsi/initiatorname.iscsi
       owner: root
       group: root
@@ -126,12 +126,12 @@
   tasks:
   - name: Change initiator name
     copy:
-      src: nfs.config/node1.initiator.config
+      src: node.config/node1.initiator.config
       dest: /etc/iscsi/initiatorname.iscsi
       owner: root
       group: root
 
-- name: Configure NFS nodes
+- name: Configure nodes
   hosts: tag_group_node0 tag_group_node1
   remote_user: azureadmin
   become: yes
@@ -155,13 +155,13 @@
       name: iscsi
       state: restarted
   - name: Retrieve IDs of iSCSI devices, Create the SBD devices, Adapt the SBD config
-    script: nfs.config/nfs.sbd.config.py
+    script: node.config/node.sbd.config.py
     args:
       executable: python
-      creates: /etc/delete.to.retry.nfs.sbd.config.py
+      creates: /etc/delete.to.retry.node.sbd.config.py
   - name: Create the softdog configuration file
     copy:
-      src: nfs.config/nfs.softdog.config
+      src: node.config/node.softdog.config
       dest: /etc/modules-load.d/softdog.conf   
   - name: Load softdog module
     command: sudo modprobe -v softdog
@@ -175,7 +175,7 @@
       state: present
   - name: Configure systemd
     copy:
-      src: nfs.config/nfs.systemd.config
+      src: node.config/node.systemd.config
       dest: /etc/systemd/system.conf
       owner: root
       group: root  
@@ -184,7 +184,7 @@
     command: sudo systemctl daemon-reload 
   - name: Configure systemd
     copy:
-      src: nfs.config/nfs.sysctl.config
+      src: node.config/node.sysctl.config
       dest: /etc/sysctl.conf
       owner: root
       group: root  
@@ -192,7 +192,7 @@
   - name: Configure interface
     run_once: true
     copy:
-      src: nfs.config/nfs.interface.config
+      src: node.config/node.interface.config
       dest: /etc/sysconfig/network/ifcfg-eth0
       owner: root
       group: root  
@@ -202,7 +202,7 @@
       name: fence-agents
       state: present
 
-- name: Configure NFS node0
+- name: Configure node node0
   hosts: tag_group_node0
   remote_user: azureadmin
   become: yes
@@ -233,7 +233,7 @@
         'SBD is already configured to use': 'n'
   - name: Update corosync config
     copy:
-      src: nfs.config/nfs.corosync.config
+      src: node.config/node.corosync.config
       dest: /etc/corosync/corosync.conf
   - name: Restart corosync
     command: sudo service corosync restart
