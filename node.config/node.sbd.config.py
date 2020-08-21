@@ -16,7 +16,7 @@ for i in id:
 e = open("/tmp/sbd", "a")
 f = open("/etc/sysconfig/sbd", "r")
 for i in (f.read().splitlines()):
-  if "SBD_DEVICE=" in i:
+  if "#SBD_DEVICE=" in i:
     e.write("SBD_DEVICE=" + "\"" + ";".join(id) + "\"" + "\n")
   else:
     e.write(i + "\n")
