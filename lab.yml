@@ -202,7 +202,7 @@
       name: fence-agents
       state: present
 
-- name: Configure node node0
+- name: Configure node0
   hosts: tag_group_node0
   remote_user: azureadmin
   become: yes
