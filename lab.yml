@@ -237,3 +237,33 @@
       dest: /etc/corosync/corosync.conf
   - name: Restart corosync
     command: sudo service corosync restart
+
+- name: Configure node1
+  hosts: tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Stop corosync
+    command: sudo service corosync stop
+    args:
+      creates: /etc/corosync/corosync.conf
+  - name: Stop pacemaker
+    command: sudo service pacemaker stop
+    args:
+      creates: /etc/corosync/corosync.conf
+  - name: Join node to cluster
+    expect:
+      command: sudo ha-cluster-join
+      echo: yes
+      creates: /etc/corosync/corosync.conf
+      responses:
+        'Do you want to continue anyway (y/n)?': 'y'
+        '  IP address or hostname of existing node': '10.0.0.6'
+        '/root/.ssh/id_rsa already exists - overwrite (y/n)?': 'n'
+        '  Address for ring0': ''
+  - name: Update corosync config
+    copy:
+      src: nfs.config/nfs.corosync.config
+      dest: /etc/corosync/corosync.conf
+  - name: Restart corosync
+    command: sudo service corosync restart
