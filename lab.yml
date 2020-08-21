@@ -201,3 +201,39 @@
     zypper:
       name: fence-agents
       state: present
+
+- name: Configure NFS node0
+  hosts: tag_group_node0
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Stop corosync
+    command: sudo service corosync stop
+    args:
+      creates: /etc/corosync/corosync.conf
+  - name: Stop pacemaker
+    command: sudo service pacemaker stop
+    args:
+      creates: /etc/corosync/corosync.conf
+  - name: Configure ha-cluster-init
+    expect:
+      command: sudo ha-cluster-init -u
+      echo: yes
+      creates: /etc/corosync/corosync.conf
+      responses:
+        "Do you want to continue anyway (y/n)?": "y"
+        "/root/.ssh/id_rsa already exists - overwrite (y/n)?": "n"
+        '  Address for ring0': ""
+        "  Port for ring0": ""
+        "Do you wish to use SBD (y/n)?": "y"
+        "Do you wish to configure a virtual IP address (y/n)?": "n"
+        'csync2 is already configured - overwrite (y/n)?': 'y'
+        '/etc/corosync/authkey already exists - overwrite (y/n)?': 'y'        
+        '/etc/pacemaker/authkey already exists - overwrite (y/n)?': 'y'
+        'SBD is already configured to use': 'n'
+  - name: Update corosync config
+    copy:
+      src: nfs.config/nfs.corosync.config
+      dest: /etc/corosync/corosync.conf
+  - name: Restart corosync
+    command: sudo service corosync restart
