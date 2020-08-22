@@ -271,7 +271,7 @@
   - name: Create GFS partition and filesystem
     script: node.config/node.shared.config.py
     args:
-      executable: python3
+      executable: python
       creates: /etc/delete.to.retry.node.shared.config.py
   - name: Create GFS cluster resources
     script: node.config/node.gfs.config.sh
