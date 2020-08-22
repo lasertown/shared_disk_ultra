@@ -262,5 +262,5 @@
     zypper:
       name: gfs2-utils
       state: present
-    - name: Create rg file for dynamic inventory
-      shell: node.config/node.gfs.config.sh
+  - name: Create rg file for dynamic inventory
+    shell: node.config/node.gfs.config.sh
