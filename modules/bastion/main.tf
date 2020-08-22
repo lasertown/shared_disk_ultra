@@ -64,8 +64,8 @@ resource "azurerm_network_interface_security_group_association" "isga" {
 }
 
 # Create virtual machine
-resource "azurerm_linux_virtual_machine" bastion {
-    name                  = var.region
+resource "azurerm_linux_virtual_machine" "bastion" {
+    name                  = "bastion-${var.region}"
     location              = var.region
     resource_group_name   = var.rg
     network_interface_ids = [azurerm_network_interface.nic.id]
