@@ -277,4 +277,3 @@
     script: node.config/node.gfs.config.sh
     args:
       creates: /etc/delete.to.retry.node.gfs.config.sh
-    shell: node.config/node.gfs.config.sh
