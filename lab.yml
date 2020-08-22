@@ -252,3 +252,13 @@
     script: node.config/node.stonith.config.sh
     args:
       creates: /etc/delete.to.retry.node.stonith.config.sh
+
+- name: Install GFS packages
+  hosts: tag_group_node0 tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Install gfs2-utils
+    zypper:
+      name: gfs2-utils
+      state: present
