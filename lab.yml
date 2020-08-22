@@ -264,7 +264,7 @@
       state: present
 
 - name: Add the NFS drbd devices for SAP system NW1 to the cluster configuration
-  hosts: tag_group_node0 tag_group_node1
+  hosts: tag_group_node0
   remote_user: azureadmin
   become: yes
   tasks:
