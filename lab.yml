@@ -262,5 +262,19 @@
     zypper:
       name: gfs2-utils
       state: present
-  - name: Create rg file for dynamic inventory
+
+- name: Add the NFS drbd devices for SAP system NW1 to the cluster configuration
+  hosts: tag_group_node0 tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Create GFS partition and filesystem
+    script: node.config/node.shared.config.py
+    args:
+      executable: python3
+      creates: /etc/delete.to.retry.node.shared.config.py
+  - name: Create GFS cluster resources
+    script: node.config/node.gfs.config.sh
+    args:
+      creates: /etc/delete.to.retry.node.gfs.config.sh
     shell: node.config/node.gfs.config.sh
