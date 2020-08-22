@@ -18,6 +18,12 @@ resource "null_resource" "shared_disk2" {
   }
 }
 
+resource "null_resource" "shared_disk3" {
+  provisioner "local-exec" {
+    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 256 -l westcentralus --max-shares 2"
+  }
+}
+
 data "azurerm_managed_disk" "existing0" {
   name                = "shared_disk0"
   resource_group_name = var.rg
@@ -32,6 +38,11 @@ data "azurerm_managed_disk" "existing2" {
   name                = "shared_disk2"
   resource_group_name = var.rg
   depends_on          = [ null_resource.shared_disk2, ]
+}
+data "azurerm_managed_disk" "existing3" {
+  name                = "shared_disk3"
+  resource_group_name = var.rg
+  depends_on          = [ null_resource.shared_disk3, ]
 }
 
 resource "azurerm_proximity_placement_group" "node" {
@@ -130,35 +141,26 @@ resource "azurerm_virtual_machine_data_disk_attachment" "node-0a" {
   caching            = "ReadWrite"
 }
 
-resource "azurerm_managed_disk" "node-0b" {
-  name                 = "${azurerm_linux_virtual_machine.node-0.name}-disk1b"
-  location             = var.region
-  resource_group_name  = var.rg
-  storage_account_type = "Premium_LRS"
-  create_option        = "Empty"
-  disk_size_gb         = 100
-}
-resource "azurerm_virtual_machine_data_disk_attachment" "node-0b" {
-  managed_disk_id    = azurerm_managed_disk.node-0b.id
-  virtual_machine_id = azurerm_linux_virtual_machine.node-0.id
-  lun                = "1"
-  caching            = "ReadWrite"
-}
-
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk0_0" {
   managed_disk_id    = data.azurerm_managed_disk.existing0.id
   virtual_machine_id = azurerm_linux_virtual_machine.node-0.id
-  lun                = "2"
+  lun                = "1"
   caching            = "None"
 }
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk1_0" {
   managed_disk_id    = data.azurerm_managed_disk.existing1.id
   virtual_machine_id = azurerm_linux_virtual_machine.node-0.id
-  lun                = "3"
+  lun                = "2"
   caching            = "None"
 }
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk2_0" {
   managed_disk_id    = data.azurerm_managed_disk.existing2.id
+  virtual_machine_id = azurerm_linux_virtual_machine.node-0.id
+  lun                = "3"
+  caching            = "None"
+}
+resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk3_0" {
+  managed_disk_id    = data.azurerm_managed_disk.existing3.id
   virtual_machine_id = azurerm_linux_virtual_machine.node-0.id
   lun                = "4"
   caching            = "None"
@@ -216,35 +218,26 @@ resource "azurerm_virtual_machine_data_disk_attachment" "node-1a" {
   caching            = "ReadWrite"
 }
 
-resource "azurerm_managed_disk" "node-1b" {
-  name                 = "${azurerm_linux_virtual_machine.node-1.name}-disk1b"
-  location             = var.region
-  resource_group_name  = var.rg
-  storage_account_type = "Premium_LRS"
-  create_option        = "Empty"
-  disk_size_gb         = 100
-}
-resource "azurerm_virtual_machine_data_disk_attachment" "node-1b" {
-  managed_disk_id    = azurerm_managed_disk.node-1b.id
-  virtual_machine_id = azurerm_linux_virtual_machine.node-1.id
-  lun                = "1"
-  caching            = "ReadWrite"
-}
-
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk0_1" {
   managed_disk_id    = data.azurerm_managed_disk.existing0.id
   virtual_machine_id = azurerm_linux_virtual_machine.node-1.id
-  lun                = "2"
+  lun                = "1"
   caching            = "None"
 }
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk1_1" {
   managed_disk_id    = data.azurerm_managed_disk.existing1.id
   virtual_machine_id = azurerm_linux_virtual_machine.node-1.id
-  lun                = "3"
+  lun                = "2"
   caching            = "None"
 }
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk2_1" {
   managed_disk_id    = data.azurerm_managed_disk.existing2.id
+  virtual_machine_id = azurerm_linux_virtual_machine.node-1.id
+  lun                = "3"
+  caching            = "None"
+}
+resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk3_1" {
+  managed_disk_id    = data.azurerm_managed_disk.existing3.id
   virtual_machine_id = azurerm_linux_virtual_machine.node-1.id
   lun                = "4"
   caching            = "None"
