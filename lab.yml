@@ -216,12 +216,7 @@
         '/etc/corosync/authkey already exists - overwrite (y/n)?': 'y'        
         '/etc/pacemaker/authkey already exists - overwrite (y/n)?': 'y'
         'SBD is already configured to use': 'n'
-  - name: Update corosync config
-    copy:
-      src: node.config/node.corosync.config
-      dest: /etc/corosync/corosync.conf
-  - name: Restart corosync
-    command: sudo service corosync restart
+      timeout: 300
 
 - name: Configure node1
   hosts: tag_group_node1
@@ -246,12 +241,7 @@
         '  IP address or hostname of existing node': '10.0.0.6'
         '/root/.ssh/id_rsa already exists - overwrite (y/n)?': 'n'
         '  Address for ring0': ''
-  - name: Update corosync config
-    copy:
-      src: node.config/node.corosync.config
-      dest: /etc/corosync/corosync.conf
-  - name: Restart corosync
-    command: sudo service corosync restart
+      timeout: 300
 
 - name: Configure node0
   hosts: tag_group_node0
