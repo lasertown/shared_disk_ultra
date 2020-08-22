@@ -263,7 +263,7 @@
       name: gfs2-utils
       state: present
 
-- name: Add the NFS drbd devices for SAP system NW1 to the cluster configuration
+- name: Create GFS
   hosts: tag_group_node0
   remote_user: azureadmin
   become: yes
@@ -277,3 +277,19 @@
     script: node.config/node.gfs.config.sh
     args:
       creates: /etc/delete.to.retry.node.gfs.config.sh
+
+- name: Sync disks
+  hosts: tag_group_node1
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Sync disks to pickup GFS changes
+    command: partprobe
+
+- name: Start GFS cluster resource
+  hosts: tag_group_node0
+  remote_user: azureadmin
+  become: yes
+  tasks:
+  - name: Start GFS resource 
+    command: crm resource start gfs2-1
