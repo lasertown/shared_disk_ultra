@@ -19,7 +19,7 @@ resource "null_resource" "shared_disk2" {
 }
 resource "null_resource" "shared_disk3" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 512 -l westcentralus --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 260 -l westcentralus --max-shares 2"
   }
 }
 
