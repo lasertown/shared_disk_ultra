@@ -1,6 +1,6 @@
 module "rg0" {
   source = "./modules/resource_group"
-  rg = "test_cluster"
+  rg = "test_cluster_ultra"
 }
 
 module "network0" {
