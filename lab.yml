@@ -218,6 +218,12 @@
         '/etc/pacemaker/authkey already exists - overwrite (y/n)?': 'y'
         'SBD is already configured to use': 'n'
       timeout: 300
+  - name: Update corosync config
+    copy:
+      src: node.config/node.corosync.config
+      dest: /etc/corosync/corosync.conf
+  - name: Restart corosync
+    command: sudo service corosync restart
 
 - name: Configure node1
   hosts: tag_group_node1
