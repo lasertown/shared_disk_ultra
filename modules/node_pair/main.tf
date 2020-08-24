@@ -77,7 +77,6 @@ resource "azurerm_linux_virtual_machine" "node-0" {
     name                  = "node-0"
     location              = var.region
     resource_group_name   = var.rg
-    proximity_placement_group_id = azurerm_proximity_placement_group.node.id
     network_interface_ids = [azurerm_network_interface.node-0.id]
     size                  = var.vm_size
 
@@ -96,7 +95,6 @@ resource "azurerm_linux_virtual_machine" "node-0" {
     }
 
     computer_name  = "node-0"
-    availability_set_id = azurerm_availability_set.node.id
     admin_username = "azureadmin"
 #    custom_data    = file("<path/to/file>")
 
@@ -143,7 +141,6 @@ resource "azurerm_linux_virtual_machine" "node-1" {
     name                  = "node-1"
     location              = var.region
     resource_group_name   = var.rg
-    proximity_placement_group_id = azurerm_proximity_placement_group.node.id
     network_interface_ids = [azurerm_network_interface.node-1.id]
     size                  = var.vm_size
 
@@ -162,7 +159,6 @@ resource "azurerm_linux_virtual_machine" "node-1" {
     }
 
     computer_name  = "node-1"
-    availability_set_id = azurerm_availability_set.node.id
     admin_username = "azureadmin"
 #    custom_data    = file("<path/to/file>")
 
