@@ -24,6 +24,7 @@ module "nodes0" {
 source = "./modules/node_pair"
 rg = module.rg0.rg
 region = module.network0.region
+vm_size = "Standard_D2s_v3"
 subnet = module.network0.subnet
 publisher = "SUSE"
 offer = "sles-sap-12-sp5"
