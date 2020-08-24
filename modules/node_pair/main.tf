@@ -4,22 +4,22 @@ provider "azurerm" {
 
 resource "null_resource" "shared_disk0" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 256 -l westcentralus --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 1 -l ${var.region} --max-shares 2"
   }
 }
 resource "null_resource" "shared_disk1" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 256 -l westcentralus --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 1 -l ${var.region} --max-shares 2"
   }
 }
 resource "null_resource" "shared_disk2" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 256 -l westcentralus --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 1 -l ${var.region} --max-shares 2"
   }
 }
 resource "null_resource" "shared_disk3" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 260 -l westcentralus --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 10 -l ${var.region} --max-shares 2"
   }
 }
 
