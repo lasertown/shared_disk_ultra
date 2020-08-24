@@ -4,22 +4,22 @@ provider "azurerm" {
 
 resource "null_resource" "shared_disk0" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 1 -l ${var.region} --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 1 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 1000 --disk-mbps-read-write 50"
   }
 }
 resource "null_resource" "shared_disk1" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 1 -l ${var.region} --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 1 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 1000 --disk-mbps-read-write 50"
   }
 }
 resource "null_resource" "shared_disk2" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 1 -l ${var.region} --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 1 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 1000 --disk-mbps-read-write 50"
   }
 }
 resource "null_resource" "shared_disk3" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 10 -l ${var.region} --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 10 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 1000 --disk-mbps-read-write 50"
   }
 }
 
@@ -42,21 +42,6 @@ data "azurerm_managed_disk" "existing3" {
   name                = "shared_disk3"
   resource_group_name = var.rg
   depends_on          = [ null_resource.shared_disk3, ]
-}
-
-resource "azurerm_proximity_placement_group" "node" {
-  name                = var.region
-  location            = var.region
-  resource_group_name = var.rg
-}
-
-resource "azurerm_availability_set" "node" {
-  name                = "node"
-  location            = var.region
-  resource_group_name = var.rg
-  proximity_placement_group_id = azurerm_proximity_placement_group.node.id
-  platform_fault_domain_count = "1"
-  platform_update_domain_count = "1"
 }
 
 # Create network interfaces
@@ -120,24 +105,13 @@ resource "azurerm_linux_virtual_machine" "node-0" {
         public_key     = file("~/.ssh/lab_rsa.pub")
     }
     
+    additional_capabilities {
+      ultra_ssd_enabled = true
+    }
+
     tags = {
     group = "node0"
     }
-}
-
-resource "azurerm_managed_disk" "node-0a" {
-  name                 = "${azurerm_linux_virtual_machine.node-0.name}-disk1a"
-  location             = var.region
-  resource_group_name  = var.rg
-  storage_account_type = "Premium_LRS"
-  create_option        = "Empty"
-  disk_size_gb         = 100
-}
-resource "azurerm_virtual_machine_data_disk_attachment" "node-0a" {
-  managed_disk_id    = azurerm_managed_disk.node-0a.id
-  virtual_machine_id = azurerm_linux_virtual_machine.node-0.id
-  lun                = "0"
-  caching            = "ReadWrite"
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk0_0" {
@@ -197,24 +171,13 @@ resource "azurerm_linux_virtual_machine" "node-1" {
         public_key     = file("~/.ssh/lab_rsa.pub")
     }
 
-    tags = {
-    group = "node1"
+    additional_capabilities {
+      ultra_ssd_enabled = true
     }
-}
 
-resource "azurerm_managed_disk" "node-1a" {
-  name                 = "${azurerm_linux_virtual_machine.node-1.name}-disk1a"
-  location             = var.region
-  resource_group_name  = var.rg
-  storage_account_type = "Premium_LRS"
-  create_option        = "Empty"
-  disk_size_gb         = 100
-}
-resource "azurerm_virtual_machine_data_disk_attachment" "node-1a" {
-  managed_disk_id    = azurerm_managed_disk.node-1a.id
-  virtual_machine_id = azurerm_linux_virtual_machine.node-1.id
-  lun                = "0"
-  caching            = "ReadWrite"
+    tags = {
+      group = "node1"
+    }
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk0_1" {
