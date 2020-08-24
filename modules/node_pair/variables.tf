@@ -10,6 +10,10 @@ variable "vm_size" {
   description = "The VM size/type"
 }
 
+variable "az" {
+  description = "The Availibility Zone of the resource"
+}
+
 variable "subnet" {
   description = "The subnet for all resources in this module"
 }
