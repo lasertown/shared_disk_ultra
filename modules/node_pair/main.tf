@@ -77,7 +77,7 @@ resource "azurerm_linux_virtual_machine" "node-0" {
     name                  = "node-0"
     location              = var.region
     resource_group_name   = var.rg
-    zones                 = var.az
+    zone                  = var.az
     network_interface_ids = [azurerm_network_interface.node-0.id]
     size                  = var.vm_size
 
