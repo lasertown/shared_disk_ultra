@@ -6,6 +6,10 @@ variable "region" {
   description = "The Azure location where all resources in this example should be created"
 }
 
+variable "vm_size" {
+  description = "The VM size/type"
+}
+
 variable "subnet" {
   description = "The subnet for all resources in this module"
 }
