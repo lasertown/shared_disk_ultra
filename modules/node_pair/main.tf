@@ -19,7 +19,7 @@ resource "null_resource" "shared_disk2" {
 }
 resource "null_resource" "shared_disk3" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 65 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 240 --disk-mbps-read-write 50 --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 64 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 240 --disk-mbps-read-write 50 --max-shares 2"
   }
 }
 
