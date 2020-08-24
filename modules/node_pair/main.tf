@@ -4,22 +4,22 @@ provider "azurerm" {
 
 resource "null_resource" "shared_disk0" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 100 --disk-mbps-read-write 25"
+    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zones ${var.az} --disk-iops-read-write 100 --disk-mbps-read-write 25"
   }
 }
 resource "null_resource" "shared_disk1" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 100 --disk-mbps-read-write 25"
+    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zones ${var.az} --disk-iops-read-write 100 --disk-mbps-read-write 25"
   }
 }
 resource "null_resource" "shared_disk2" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 100 --disk-mbps-read-write 25"
+    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zones ${var.az} --disk-iops-read-write 100 --disk-mbps-read-write 25"
   }
 }
 resource "null_resource" "shared_disk3" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 64 -l ${var.region} --sku UltraSSD_LRS --disk-iops-read-write 240 --disk-mbps-read-write 50"
+    command = "az disk create -g ${var.rg} -n shared_disk3 --size-gb 64 -l ${var.region} --sku UltraSSD_LRS --zones ${var.az} --disk-iops-read-write 240 --disk-mbps-read-write 50"
   }
 }
 
@@ -77,6 +77,7 @@ resource "azurerm_linux_virtual_machine" "node-0" {
     name                  = "node-0"
     location              = var.region
     resource_group_name   = var.rg
+    zones                 = var.az
     network_interface_ids = [azurerm_network_interface.node-0.id]
     size                  = var.vm_size
 
@@ -141,6 +142,7 @@ resource "azurerm_linux_virtual_machine" "node-1" {
     name                  = "node-1"
     location              = var.region
     resource_group_name   = var.rg
+    zones                 = var.az
     network_interface_ids = [azurerm_network_interface.node-1.id]
     size                  = var.vm_size
 
