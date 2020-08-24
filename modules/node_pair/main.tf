@@ -94,7 +94,7 @@ resource "azurerm_linux_virtual_machine" "node-0" {
     resource_group_name   = var.rg
     proximity_placement_group_id = azurerm_proximity_placement_group.node.id
     network_interface_ids = [azurerm_network_interface.node-0.id]
-    size                  = "Standard_DS2_v2"
+    size                  = var.vm_size
 
     os_disk {
         name              = "node-0"
@@ -171,7 +171,7 @@ resource "azurerm_linux_virtual_machine" "node-1" {
     resource_group_name   = var.rg
     proximity_placement_group_id = azurerm_proximity_placement_group.node.id
     network_interface_ids = [azurerm_network_interface.node-1.id]
-    size                  = "Standard_DS2_v2"
+    size                  = var.vm_size
 
     os_disk {
         name              = "node-1"
