@@ -3,7 +3,7 @@
 import subprocess
 
 lsblk = subprocess.Popen(['lsblk'], stdout=subprocess.PIPE,)
-grep = subprocess.Popen(['grep', '256G'], stdin=lsblk.stdout, stdout=subprocess.PIPE,)
+grep = subprocess.Popen(['grep', '4G'], stdin=lsblk.stdout, stdout=subprocess.PIPE,)
 disk = grep.stdout.readlines()
 id = []
 for i in disk:
