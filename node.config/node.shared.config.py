@@ -1,10 +1,9 @@
 #!/usr/bin/python
 
 import subprocess
-import time
 
 lsblk = subprocess.Popen(['lsblk'], stdout=subprocess.PIPE,)
-grep = subprocess.Popen(['grep', '65G'], stdin=lsblk.stdout, stdout=subprocess.PIPE,)
+grep = subprocess.Popen(['grep', '-w', '64G'], stdin=lsblk.stdout, stdout=subprocess.PIPE,)
 disk = grep.stdout.readlines()
 id = []
 for i in disk:
