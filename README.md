@@ -23,6 +23,21 @@ Cloudshell in the Portal times out after 20 minutes, so installing in your local
 $ ansible-playbook -i myazure_rm.yml lab.yml
 
 The cluster will be created in a resource group specified in the root module's main.tf.
+
+## Login to the bastion host
+
+An alias to make it easy to login to the bastion is created in your local environment .bashrc:
+
+alias bastion='ssh -i ~/.ssh/lab_rsa azureadmin@\`terraform output bastion_ip\`'
+
+Source the .bashrc:
+
+$ . ~/.bashrc
+
+You can now login to the bastion with the alias:
+
+$ bastion
+
 # Deleting the cluster
 ### The cluster can be deprovisioned by running:
 
