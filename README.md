@@ -19,7 +19,7 @@ Cloudshell in the Portal times out after 20 minutes, so installing in your local
     3. $ az account list --output table **(Run this command to list your subscriptions)**
     4. $ az account set --subscription "My Subscription" **(Sets active subscription)**
 
-### Clone the repository and run this command from root of project folder:
+## Clone the repository and run this command from root of project folder:
 $ ansible-playbook -i myazure_rm.yml lab.yml
 
 The cluster will be created in a resource group specified in the root module's main.tf.
