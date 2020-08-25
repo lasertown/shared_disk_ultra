@@ -7,8 +7,10 @@ The cluster will be created in a resource group specified in the root module's m
 # Deleting the cluster
 The cluster can be deprovisioned by running:
 $ terraform delete
+
 You can also simply delete the resource group the cluster is in.  
 If you manually delete the resource group, terraform will leave behind the files:
-terraform.tfstate
-terraform.tfstate.backup
+1. terraform.tfstate
+1. terraform.tfstate.backup
+
 Delete the tfstate files and you ready to spin up another cluster.  If you do not want to wait for the previous resource group to be deleted, you can create a new resource group name in main.tf
