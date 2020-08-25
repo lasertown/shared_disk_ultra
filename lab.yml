@@ -62,8 +62,8 @@
       state: present
       block: |
         # Cluster nodes
-        10.0.0.6 node0
-        10.0.0.7 node1
+        10.0.0.6 node-0
+        10.0.0.7 node-1
 
 - name: Push SSH config
   hosts: all
