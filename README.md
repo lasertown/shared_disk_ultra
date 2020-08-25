@@ -14,7 +14,10 @@ Cloudshell in the Portal times out after 20 minutes, so installing in your local
     3. $ sudo apt-add-repository --yes --update ppa:ansible/ansible
     4. $ sudo apt install ansible
 - az CLI
-    2.
+    1. $ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash **Installs az CLI**
+    2. $ az login **Run this and follow prompt to authenticate with Azure.  This only needs to be done once.**
+    3. $ az account list --output table **Run this command to list your subscriptions**
+    4. $ az account set --subscription "<Sub name or ID>" **Sets active subscription**
 
 ## Clone the repository and run this command from root of project folder:
 $ ansible-playbook -i myazure_rm.yml lab.yml
