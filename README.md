@@ -27,9 +27,7 @@ The cluster will be created in a resource group specified in the root module's m
 
 ## Login to the bastion host
 
-An alias to make it easy to login to the bastion is created in your local environment .bashrc:
-
-alias bastion='ssh -i ~/.ssh/lab_rsa azureadmin@\`terraform output bastion_ip\`'
+### An alias to make it easy to login to the bastion is created in your local environment .bashrc
 
 Source the .bashrc:
 
