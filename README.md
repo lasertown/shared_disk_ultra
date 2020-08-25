@@ -6,6 +6,7 @@ $ ansible-playbook -i myazure_rm.yml lab.yml
 The cluster will be created in a resource group specified in the root module's main.tf.
 # Deleting the cluster
 The cluster can be deprovisioned by running:
+
 $ terraform delete
 
 You can also simply delete the resource group the cluster is in.  
