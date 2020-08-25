@@ -19,17 +19,16 @@ Cloudshell in the Portal times out after 20 minutes, so installing in your local
     3. $ az account list --output table **Run this command to list your subscriptions**
     4. $ az account set --subscription "<Sub name or ID>" **Sets active subscription**
 
-## Clone the repository and run this command from root of project folder:
+### Clone the repository and run this command from root of project folder:
 $ ansible-playbook -i myazure_rm.yml lab.yml
 
 The cluster will be created in a resource group specified in the root module's main.tf.
 # Deleting the cluster
-The cluster can be deprovisioned by running:
+### The cluster can be deprovisioned by running:
 
 $ terraform delete
 
-You can also simply delete the resource group the cluster is in.  
-If you manually delete the resource group, terraform will leave behind the files:
+You can also simply delete the resource group the cluster is in.  If you manually delete the resource group, terraform will leave behind the files:
 1. terraform.tfstate
 1. terraform.tfstate.backup
 
