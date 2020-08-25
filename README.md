@@ -1,6 +1,22 @@
-# Requires the latest Terraform and Ansible
+# Installation
+## Requires the latest Terraform and Ansible
 Azure Cloudshell has both Terraform and Ansible preinstalled, so cloning and launching from Cloudshell is convienent.
-# Clone the repository and run this command from root of project folder:
+## Installation in your local Linux environment 
+Cloudshell in the Portal times out after 20 minutes, so installing in your local environment or Linux VM is a good option.  If you use Cloudshell, you will have to hit the keyboard every now and then to prevent a timeout.
+### Installation for Ubuntu
+- Terraform
+    1. $ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+    2. $ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    3. $ sudo apt-get update && sudo apt-get install terraform
+- Ansible    
+    1. $ sudo apt update
+    2. $ sudo apt install software-properties-common
+    3. $ sudo apt-add-repository --yes --update ppa:ansible/ansible
+    4. $ sudo apt install ansible
+- az CLI
+    2.
+
+## Clone the repository and run this command from root of project folder:
 $ ansible-playbook -i myazure_rm.yml lab.yml
 
 The cluster will be created in a resource group specified in the root module's main.tf.
