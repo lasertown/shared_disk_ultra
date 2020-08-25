@@ -4,17 +4,17 @@ provider "azurerm" {
 
 resource "null_resource" "shared_disk0" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 100 --disk-mbps-read-write 1 --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk0 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 120 --disk-mbps-read-write 1 --max-shares 2"
   }
 }
 resource "null_resource" "shared_disk1" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 100 --disk-mbps-read-write 1 --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk1 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 120 --disk-mbps-read-write 1 --max-shares 2"
   }
 }
 resource "null_resource" "shared_disk2" {
   provisioner "local-exec" {
-    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 100 --disk-mbps-read-write 1 --max-shares 2"
+    command = "az disk create -g ${var.rg} -n shared_disk2 --size-gb 4 -l ${var.region} --sku UltraSSD_LRS --zone ${var.az} --disk-iops-read-write 120 --disk-mbps-read-write 1 --max-shares 2"
   }
 }
 resource "null_resource" "shared_disk3" {
