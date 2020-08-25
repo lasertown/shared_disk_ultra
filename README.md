@@ -1,4 +1,4 @@
-![image info](.image.png)
+![image info](./image.png)
 # Installation
 ## Requires the latest Terraform and Ansible
 Azure Cloudshell has both Terraform and Ansible preinstalled, so cloning and launching from Cloudshell is convienent.
