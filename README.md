@@ -2,6 +2,7 @@
 Azure Cloudshell has both Terraform and Ansible preinstalled, so cloning and launching from Cloudshell is convienent.
 # Clone the repository and run this command from root of project folder:
 $ ansible-playbook -i myazure_rm.yml lab.yml
+
 The cluster will be created in a resource group specified in the root module's main.tf.
 # Deleting the cluster
 The cluster can be deprovisioned by running:
