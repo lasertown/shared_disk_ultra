@@ -14,6 +14,8 @@ Cloudshell in the Portal times out after 20 minutes, so installing in your local
     2. $ sudo apt install software-properties-common
     3. $ sudo apt-add-repository --yes --update ppa:ansible/ansible
     4. $ sudo apt install ansible
+    5. $ sudo apt install python-pip 
+    6. $ sudo pip install 'ansible[azure]'
 - az CLI
     1. $ curl -sL `https://aka.ms/InstallAzureCLIDeb` | sudo bash **(Installs az CLI)**
     2. $ az login **(Run this and follow prompt to authenticate with Azure.  This only needs to be done once.)**
