@@ -20,12 +20,12 @@
       path: ~/.bashrc
       state: present
       block: |
-        alias bastion='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output bastion_ip`'
+        alias bastion='ssh -i ~/.ssh/lab_rsa azureadmin@`terraform output -raw bastion_ip`'
         ANSIBLE_STDOUT_CALLBACK=debug
   - name: Terraform refresh
     shell: terraform refresh
   - name: Create rg file for dynamic inventory
-    shell: echo { \"rg\":\"`terraform output rg`\" } > rg.json
+    shell: echo { \"rg\":\"`terraform output -raw rg`\" } > rg.json
   - name: Include vars of stuff.yaml into the 'stuff' variable
     include_vars:
       file: rg.json
