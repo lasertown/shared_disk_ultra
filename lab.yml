@@ -2,7 +2,11 @@
   hosts: localhost
   connection: local
   tasks:
-  - name: Generate SSH keys
+  - name: Generate personal SSH keys if they do not already exist
+    openssh_keypair:
+      path: ~/.ssh/id_rsa
+      force: False
+  - name: Generate Lab SSH keys
     openssh_keypair:
       path: ~/.ssh/lab_rsa
   - name: Terraform apply
@@ -49,6 +53,11 @@
   remote_user: azureadmin
   become: yes
   tasks:
+  - name: Set personal authorized key taken from file
+    authorized_key:
+      user: azureadmin
+      state: present
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
   - name: Push SSH azureadmin private key
     copy:
       src: ~/.ssh/lab_rsa
