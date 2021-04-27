@@ -40,4 +40,4 @@ Delete the tfstate files and you ready to spin up another cluster.  If you do no
 # Tips
 
 ### SSH Keys
-If you do not already have SSH keys setup in your home directory, they will be created for you.  The public keys will be installed on both the nodes.  The username you should login with is 'azureadmin'.  If you already have SSH keys setup, you can login with your existing keys with the 'azadmin' user, as your existing keys will be distributed to both nodes.
+If you do not already have SSH keys setup in your home directory, they will be created for you.  The public keys will be installed on all the nodes.  The username you should login with is 'azureadmin'.  If you already have SSH keys setup, you can login with your existing keys with the 'azureadmin' user, as your existing keys will be distributed to all nodes. Login to the bastion host first to be able to reach the cluster nodes.
