@@ -18,30 +18,19 @@ Cloudshell in the Portal times out after 20 minutes, so installing in your local
 $ az login
 ```  
 
-# Clone the repository and run this command from root of project folder:
+### Clone the repository and run this command from root of project folder:
+```console
 $ ansible-playbook -i myazure_rm.yml lab.yml
+```  
+The resources will be created in a resource group specified in the root of the repo's main.tf.
 
-The cluster will be created in a resource group specified in the root module's main.tf.
-
-## Login to the bastion host
-
-### An alias to make it easy to login to the bastion is created in your local environment .bashrc
-
-Source the .bashrc:
-
-$ . ~/.bashrc
-
-You can now login to the bastion with the alias:
-
-$ bastion
-
-# Deleting the cluster
+# Deleting the environment
 ### The cluster can be deprovisioned by running:
-
+```console
 $ terraform delete
-
+```  
 You can also simply delete the resource group the cluster is in.  If you manually delete the resource group, terraform will leave behind the files:
 1. terraform.tfstate
 1. terraform.tfstate.backup
 
-Delete the tfstate files and you ready to spin up another cluster.  If you do not want to wait for the previous resource group to be deleted, you can create a new resource group name in main.tf
+Delete the tfstate files and you ready to spin up another cluster.  If you do not want to wait for the previous resource group to be deleted, you can create a new resource group name in main.tf, and the new resources will be spun up in the new resource group.
