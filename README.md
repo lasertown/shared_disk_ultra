@@ -1,6 +1,6 @@
 ![image info](./image.png)
 # Overview  
-## Use Terraform and Ansible to create a Pacemaker cluster with GS storage. The cluster storage is created with an Azure Ultra shared disk. The SBD devices are are also Azure Ultra shared disks, and not hosted by VMs.  
+## Use Terraform and Ansible to create a Pacemaker cluster with GS storage. The cluster storage is created with an Azure Ultra shared disk. The SBD devices are also Azure Ultra shared disks, and not hosted by VMs.  
 # Installation
 ## Requires the latest Terraform and Ansible
 Azure Cloudshell has both Terraform and Ansible preinstalled, so cloning and launching from Cloudshell is convienent.
@@ -35,4 +35,9 @@ You can also simply delete the resource group the cluster is in.  If you manuall
 1. terraform.tfstate
 1. terraform.tfstate.backup
 
-Delete the tfstate files and you ready to spin up another cluster.  If you do not want to wait for the previous resource group to be deleted, you can create a new resource group name in main.tf, and the new resources will be spun up in the new resource group.
+Delete the tfstate files and you ready to spin up another cluster.  If you do not want to wait for the previous resource group to be deleted, you can create a new resource group name in main.tf, and the new resources will be spun up in the new resource group.  
+
+# Tips
+
+### SSH Keys
+If you do not already have SSH keys setup in your home directory, they will be created for you.  The public keys will be installed on both the nodes.  The username you should login with is 'azureadmin'.  If you already have SSH keys setup, you can login with your existing keys with the 'azadmin' user, as your existing keys will be distributed to both nodes.
