@@ -1,6 +1,6 @@
 ![image info](./image.png)
 # Overview  
-## Use Terraform and Ansible to create a Pacemaker cluster with GS storage. The cluster storage is created with an Azure Ultra shared disk. The SBD devices are also Azure Ultra shared disks, and not hosted by VMs.  
+## Use Terraform and Ansible to create a Pacemaker cluster with GFS storage. The cluster storage is created with an Azure Ultra shared disk. The SBD devices are also Azure Ultra shared disks, and not hosted by VMs.  
 # Installation
 ## Requires the latest Terraform and Ansible
 Azure Cloudshell has both Terraform and Ansible preinstalled, so cloning and launching from Cloudshell is convienent.
