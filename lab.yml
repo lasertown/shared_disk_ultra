@@ -10,6 +10,8 @@
   - name: Generate Lab SSH keys
     openssh_keypair:
       path: ~/.ssh/lab_rsa
+      force: False
+      regenerate: never      
   - name: Terraform apply
     terraform:
       lock: no
