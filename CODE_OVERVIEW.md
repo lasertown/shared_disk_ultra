@@ -176,6 +176,7 @@ Ansible playbook to create the lab environment.
 This playbook runs Terraform, prepares SSH keys, and configures the inventory.
 
 ```yaml
+# Setup infrastructure and configure local environment
 - name: Create lab environment
   hosts: localhost
   connection: local
@@ -221,6 +222,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
   - name: Refresh inventory to ensure new instances exist in inventory
     meta: refresh_inventory
 
+# Update packages on all hosts
 - name: Zypper update
   hosts: all
   remote_user: azureadmin
@@ -229,6 +231,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
   - name: Zypper update
     command: sudo zypper up -y --skip-interactive
 
+# Configure bastion host with SSH keys
 - name: Push SSH key to bastion
   hosts: tag_group_bastion
   remote_user: azureadmin
@@ -255,6 +258,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
         10.0.0.6 node-0
         10.0.0.7 node-1
 
+# Distribute SSH client config to all VMs
 - name: Push SSH config
   hosts: all
   remote_user: azureadmin
@@ -266,6 +270,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
       owner: azureadmin
       group: users
 
+# Install root SSH keys on cluster nodes
 - name: Push root SSH keys to nodes
   hosts: tag_group_node0 tag_group_node1
   remote_user: azureadmin
@@ -307,6 +312,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
         # IP address of the second cluster node
         10.0.0.7 node-1
 
+# Configure services and kernel parameters on both nodes
 - name: Configure nodes
   hosts: tag_group_node0 tag_group_node1
   remote_user: azureadmin
@@ -378,6 +384,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
       name: fence-agents
       state: present
 
+# Initialize cluster on node0
 - name: Configure node0
   hosts: tag_group_node0
   remote_user: azureadmin
@@ -415,6 +422,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
   - name: Restart corosync
     command: sudo service corosync restart
 
+# Join node1 to the cluster
 - name: Configure node1
   hosts: tag_group_node1
   remote_user: azureadmin
@@ -440,6 +448,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
         '  Address for ring0': ''
       timeout: 300
 
+# Set up STONITH device on node0
 - name: Configure node0
   hosts: tag_group_node0
   remote_user: azureadmin
@@ -450,6 +459,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
     args:
       creates: /etc/delete.to.retry.node.stonith.config.sh
 
+# Install GFS2 tooling on both nodes
 - name: Install GFS packages
   hosts: tag_group_node0 tag_group_node1
   remote_user: azureadmin
@@ -460,6 +470,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
       name: gfs2-utils
       state: present
 
+# Configure shared GFS2 filesystem on node0
 - name: Create GFS
   hosts: tag_group_node0
   remote_user: azureadmin
@@ -475,6 +486,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
     args:
       creates: /etc/delete.to.retry.node.gfs.config.sh
 
+# Rescan disks on node1 to pick up GFS changes
 - name: Sync disks
   hosts: tag_group_node1
   remote_user: azureadmin
@@ -483,6 +495,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
   - name: Sync disks to pickup GFS changes
     command: partprobe
 
+# Start the shared filesystem resource via Pacemaker
 - name: Start GFS cluster resource
   hosts: tag_group_node0
   remote_user: azureadmin
