@@ -2,6 +2,23 @@
 
 This document lists every file in the repository along with a short description and its contents.
 
+## Directory Structure
+```text
+├── Dockerfile                 - Container with az CLI, Terraform, and Ansible
+├── README.md                  - Usage instructions
+├── main.tf                    - Entry point Terraform config
+├── outputs.tf                 - Terraform outputs
+├── lab.yml                    - Main Ansible playbook
+├── no_gfs_lab.yml             - Alternative playbook without GFS
+├── myazure_rm.yml             - Dynamic inventory for Ansible/azure_rm plugin
+├── node.config/               - Scripts and configs pushed to the VMs
+└── modules/
+    ├── resource_group/        - Terraform module for resource group
+    ├── network/               - Module for VNet/subnet
+    ├── bastion/               - Module for bastion host
+    └── node_pair/             - Module for two cluster nodes with shared disks
+```
+
 ## Dockerfile
 Docker build instructions.
 This Dockerfile installs Azure CLI, Terraform and Ansible and launches a small HTTP server.
