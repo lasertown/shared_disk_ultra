@@ -4,6 +4,7 @@ This document lists every file in the repository along with a short description 
 
 ## Dockerfile
 Docker build instructions.
+This Dockerfile installs Azure CLI, Terraform and Ansible and launches a small HTTP server.
 
 ```Dockerfile
 FROM ubuntu:22.04
@@ -53,6 +54,7 @@ ENTRYPOINT python3 -m http.server 80 --directory /tmp/ & /bin/bash
 
 ## README.md
 Repository overview and instructions.
+The README explains how to set up prerequisites and run the Terraform and Ansible playbooks for this project.
 
 ```markdown
 ![image info](./image.png)
@@ -150,9 +152,11 @@ If you do not already have SSH keys setup in your home directory, they will be c
 
 ## image.png
 Binary image used in the README.
+Image referenced by the README document.
 
 ## lab.yml
 Ansible playbook to create the lab environment.
+This playbook runs Terraform, prepares SSH keys, and configures the inventory.
 
 ```yaml
 - name: Create lab environment
@@ -474,6 +478,7 @@ Ansible playbook to create the lab environment.
 
 ## main.tf
 Top level Terraform configuration.
+This file ties together the resource group, network, bastion, and node modules.
 
 ```hcl
 module "rg0" {
@@ -514,6 +519,7 @@ _version = "latest"
 
 ## modules/bastion/main.tf
 Terraform module to create a bastion host.
+This code provisions the bastion VM, its network interface and security group.
 
 ```hcl
 provider "azurerm" {
@@ -620,6 +626,7 @@ resource "azurerm_linux_virtual_machine" "bastion" {
 
 ## modules/bastion/output.tf
 Outputs from the bastion module.
+This block outputs the bastion host's public IP address.
 
 ```hcl
 output "public_ip" {
@@ -629,6 +636,7 @@ output "public_ip" {
 
 ## modules/bastion/variables.tf
 Variables for the bastion module.
+Input variables describing where and how the bastion VM is created.
 
 ```hcl
 variable "rg" {
@@ -670,6 +678,7 @@ variable "_version" {
 
 ## modules/network/main.tf
 Terraform module to set up network.
+This module creates a virtual network and subnet used by the cluster.
 
 ```hcl
 provider "azurerm" {
@@ -694,6 +703,7 @@ resource "azurerm_subnet" "subnet" {
 
 ## modules/network/output.tf
 Outputs from the network module.
+Provides subnet and region identifiers to other modules.
 
 ```hcl
 output "subnet" {
@@ -707,6 +717,7 @@ output "region" {
 
 ## modules/network/variables.tf
 Variables for the network module.
+Defines the input variables needed to build the virtual network.
 
 ```hcl
 variable "rg" {
@@ -720,6 +731,7 @@ variable "region" {
 
 ## modules/node_pair/main.tf
 Terraform module for a node pair with shared disks.
+Provisions two VMs and attaches multiple Ultra disks for shared storage.
 
 ```hcl
 provider "azurerm" {
@@ -930,6 +942,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk3_1" {
 
 ## modules/node_pair/variables.tf
 Variables for the node pair module.
+Defines VM sizing, disk counts, and image parameters for the node VMs.
 
 ```hcl
 variable "rg" {
@@ -979,6 +992,7 @@ variable "_version" {
 
 ## modules/resource_group/main.tf
 Terraform resource group module.
+Creates the resource group that hosts all other resources.
 
 ```hcl
 provider "azurerm" {
@@ -998,6 +1012,7 @@ resource "azurerm_resource_group" "rg" {
 
 ## modules/resource_group/output.tf
 Outputs from resource group module.
+Exposes the name of the created resource group.
 
 ```hcl
 output "rg" {
@@ -1007,6 +1022,7 @@ output "rg" {
 
 ## modules/resource_group/variables.tf
 Variables for the resource group module.
+Defines the single variable required to name the resource group.
 
 ```hcl
 variable "rg" {
@@ -1016,6 +1032,7 @@ variable "rg" {
 
 ## myazure_rm.yml
 Azure dynamic inventory configuration.
+Supplies parameters for the Ansible azure_rm inventory plugin.
 
 ```yaml
 plugin: azure_rm
@@ -1032,6 +1049,7 @@ keyed_groups:
 
 ## no_gfs_lab.yml
 Ansible playbook variant without GFS.
+A simplified playbook that omits creation of the GFS shared filesystem.
 
 ```yaml
 - name: Create lab environment
@@ -1307,6 +1325,7 @@ Ansible playbook variant without GFS.
 
 ## node.config/node.corosync.config
 Corosync configuration.
+Example corosync configuration file used for the cluster nodes.
 
 ```
 # Please read the corosync.conf.5 manual page
@@ -1372,6 +1391,7 @@ quorum {
 
 ## node.config/node.gfs.config.sh
 Script configuring GFS resources.
+Bash script that defines Pacemaker resources for the GFS2 filesystem.
 
 ```bash
 #!/bin/bash
@@ -1386,6 +1406,7 @@ crm configure clone cl-storage g-storage meta interleave="true"
 
 ## node.config/node.interface.config
 Network interface configuration.
+Template for the nodes' primary network interface configuration.
 
 ```
 BOOTPROTO='dhcp'
@@ -1398,6 +1419,7 @@ CLOUD_NETCONFIG_MANAGE='yes'
 
 ## node.config/node.sbd.config.py
 Python script setting up SBD.
+Discovers iSCSI disks and writes the watchdog configuration for SBD.
 
 ```python
 #!/usr/bin/python
@@ -1432,6 +1454,7 @@ g.close()
 
 ## node.config/node.shared.config.py
 Python script for preparing shared disk.
+Partitions the shared disk and creates a GFS2 filesystem.
 
 ```python
 #!/usr/bin/python
@@ -1452,6 +1475,7 @@ g.close()
 
 ## node.config/node.softdog.config
 Watchdog driver configuration.
+Ensures the softdog kernel module is loaded for watchdog support.
 
 ```
 softdog
@@ -1459,6 +1483,7 @@ softdog
 
 ## node.config/node.stonith.config.sh
 Script configuring stonith device.
+Automates setup of STONITH fencing using SBD.
 
 ```bash
 sudo crm configure property stonith-timeout=144
@@ -1471,6 +1496,7 @@ sudo touch /etc/delete.to.retry.nfs.stonith.config.sh
 
 ## node.config/node.sysctl.config
 Custom sysctl settings.
+Provides kernel tuning parameters optimized for cluster workloads.
 
 ```
 ####
@@ -1500,6 +1526,7 @@ vm.dirty_background_bytes = 314572800
 
 ## node.config/node.systemd.config
 Systemd configuration file.
+Overrides default systemd limits such as TasksMax for cluster nodes.
 
 ```
 #  This file is part of systemd.
@@ -1568,6 +1595,7 @@ DefaultTasksMax=4096
 
 ## outputs.tf
 Top level Terraform outputs.
+Collects outputs from other modules, such as the bastion IP and resource group.
 
 ```hcl
 output "bastion_ip" {
@@ -1581,6 +1609,7 @@ output "rg" {
 
 ## ssh.config/ssh.config
 OpenSSH configuration disabling strict host checks.
+Simplifies SSH access by disabling host key verification for automation.
 
 ```
 Host *
