@@ -20,8 +20,8 @@ This document lists every file in the repository along with a short description 
 ```
 
 ## Dockerfile
-Docker build instructions.
-This Dockerfile installs Azure CLI, Terraform and Ansible and launches a small HTTP server.
+Container recipe building an Ubuntu 22.04 image.
+It installs the Azure CLI, HashiCorp Terraform, and Ansible, then starts a Python HTTP server on port 80.
 
 ```Dockerfile
 FROM ubuntu:22.04
@@ -70,8 +70,8 @@ ENTRYPOINT python3 -m http.server 80 --directory /tmp/ & /bin/bash
 ```
 
 ## README.md
-Repository overview and instructions.
-The README explains how to set up prerequisites and run the Terraform and Ansible playbooks for this project.
+Main documentation for the project.
+It details installation steps, usage of the playbooks, customizing the Terraform modules, and cleanup procedures.
 
 ```markdown
 ![image info](./image.png)
@@ -168,12 +168,10 @@ If you do not already have SSH keys setup in your home directory, they will be c
 ```
 
 ## image.png
-Binary image used in the README.
-Image referenced by the README document.
+Screenshot referenced at the top of the README.
 
 ## lab.yml
-Ansible playbook to create the lab environment.
-This playbook runs Terraform, prepares SSH keys, and configures the inventory.
+Primary Ansible automation. It provisions the infrastructure with Terraform, distributes SSH keys, configures the dynamic inventory, installs packages on the VMs, and sets up the Pacemaker cluster with shared GFS2 storage.
 
 ```yaml
 # Setup infrastructure and configure local environment
@@ -508,7 +506,7 @@ This playbook runs Terraform, prepares SSH keys, and configures the inventory.
 
 ## main.tf
 Top level Terraform configuration.
-This file ties together the resource group, network, bastion, and node modules.
+Top level Terraform configuration that calls the resource group, network, bastion, and node modules with their parameters.
 
 ```hcl
 module "rg0" {
@@ -548,8 +546,7 @@ _version = "latest"
 ```
 
 ## modules/bastion/main.tf
-Terraform module to create a bastion host.
-This code provisions the bastion VM, its network interface and security group.
+Terraform module for the bastion host. It builds a network security group with an SSH rule, associates the group with a NIC that has public and private IPs, and deploys a Linux VM using the provided image parameters.
 
 ```hcl
 provider "azurerm" {
@@ -655,8 +652,7 @@ resource "azurerm_linux_virtual_machine" "bastion" {
 ```
 
 ## modules/bastion/output.tf
-Outputs from the bastion module.
-This block outputs the bastion host's public IP address.
+Outputs from the bastion module. Provides the bastion VM's public IP address for later use.
 
 ```hcl
 output "public_ip" {
@@ -665,8 +661,7 @@ output "public_ip" {
 ```
 
 ## modules/bastion/variables.tf
-Variables for the bastion module.
-Input variables describing where and how the bastion VM is created.
+Variables controlling the bastion deployment. They specify the resource group, region, subnet, and the VM image details.
 
 ```hcl
 variable "rg" {
@@ -707,8 +702,7 @@ variable "_version" {
 ```
 
 ## modules/network/main.tf
-Terraform module to set up network.
-This module creates a virtual network and subnet used by the cluster.
+Terraform module to set up networking infrastructure. It provisions a virtual network and subnet for the cluster VMs.
 
 ```hcl
 provider "azurerm" {
@@ -732,8 +726,7 @@ resource "azurerm_subnet" "subnet" {
 ```
 
 ## modules/network/output.tf
-Outputs from the network module.
-Provides subnet and region identifiers to other modules.
+Outputs from the network module. Exposes the subnet ID and virtual network name for other modules.
 
 ```hcl
 output "subnet" {
@@ -746,8 +739,7 @@ output "region" {
 ```
 
 ## modules/network/variables.tf
-Variables for the network module.
-Defines the input variables needed to build the virtual network.
+Variables for the network module. These specify the resource group and region used to create the virtual network and subnet.
 
 ```hcl
 variable "rg" {
@@ -760,8 +752,7 @@ variable "region" {
 ```
 
 ## modules/node_pair/main.tf
-Terraform module for a node pair with shared disks.
-Provisions two VMs and attaches multiple Ultra disks for shared storage.
+Terraform module creating two cluster nodes with shared disks. It launches two Linux VMs, creates several UltraSSD disks for SBD and GFS2, and attaches them to both machines.
 
 ```hcl
 provider "azurerm" {
@@ -971,8 +962,7 @@ resource "azurerm_virtual_machine_data_disk_attachment" "shared_disk3_1" {
 ```
 
 ## modules/node_pair/variables.tf
-Variables for the node pair module.
-Defines VM sizing, disk counts, and image parameters for the node VMs.
+Variables for the node pair module. They control the resource group, region, VM size, availability zone, subnet, and image used when creating the nodes.
 
 ```hcl
 variable "rg" {
@@ -1021,8 +1011,7 @@ variable "_version" {
 ```
 
 ## modules/resource_group/main.tf
-Terraform resource group module.
-Creates the resource group that hosts all other resources.
+Terraform module that creates the Azure resource group for all other infrastructure.
 
 ```hcl
 provider "azurerm" {
@@ -1041,8 +1030,7 @@ resource "azurerm_resource_group" "rg" {
 ```
 
 ## modules/resource_group/output.tf
-Outputs from resource group module.
-Exposes the name of the created resource group.
+Outputs from the resource group module. Publishes the generated resource group name for other modules.
 
 ```hcl
 output "rg" {
@@ -1051,8 +1039,7 @@ output "rg" {
 ```
 
 ## modules/resource_group/variables.tf
-Variables for the resource group module.
-Defines the single variable required to name the resource group.
+Variables for the resource group module. Accepts a base name for the resource group which is combined with a random suffix.
 
 ```hcl
 variable "rg" {
@@ -1061,8 +1048,7 @@ variable "rg" {
 ```
 
 ## myazure_rm.yml
-Azure dynamic inventory configuration.
-Supplies parameters for the Ansible azure_rm inventory plugin.
+Azure dynamic inventory configuration. Defines how Ansible queries Azure for hosts in the resource group and configures SSH to proxy via the bastion.
 
 ```yaml
 plugin: azure_rm
@@ -1078,8 +1064,7 @@ keyed_groups:
 ```
 
 ## no_gfs_lab.yml
-Ansible playbook variant without GFS.
-A simplified playbook that omits creation of the GFS shared filesystem.
+Ansible playbook variant without GFS. It provisions the infrastructure but skips creating the shared GFS2 filesystem.
 
 ```yaml
 - name: Create lab environment
@@ -1354,8 +1339,7 @@ A simplified playbook that omits creation of the GFS shared filesystem.
 ```
 
 ## node.config/node.corosync.config
-Corosync configuration.
-Example corosync configuration file used for the cluster nodes.
+Corosync configuration file defining multicast and authentication settings for the cluster.
 
 ```
 # Please read the corosync.conf.5 manual page
@@ -1420,8 +1404,7 @@ quorum {
 ```
 
 ## node.config/node.gfs.config.sh
-Script configuring GFS resources.
-Bash script that defines Pacemaker resources for the GFS2 filesystem.
+Bash script configuring Pacemaker resources for the DLM and GFS2 filesystem.
 
 ```bash
 #!/bin/bash
@@ -1435,8 +1418,7 @@ crm configure clone cl-storage g-storage meta interleave="true"
 ```
 
 ## node.config/node.interface.config
-Network interface configuration.
-Template for the nodes' primary network interface configuration.
+Network interface configuration template providing basic settings for the nodes' primary NIC.
 
 ```
 BOOTPROTO='dhcp'
@@ -1448,8 +1430,7 @@ CLOUD_NETCONFIG_MANAGE='yes'
 ```
 
 ## node.config/node.sbd.config.py
-Python script setting up SBD.
-Discovers iSCSI disks and writes the watchdog configuration for SBD.
+Python script that scans for 4 GB disks, runs "sbd create" on each, and updates /etc/sysconfig/sbd with the resulting device list.
 
 ```python
 #!/usr/bin/python
@@ -1483,8 +1464,7 @@ g.close()
 ```
 
 ## node.config/node.shared.config.py
-Python script for preparing shared disk.
-Partitions the shared disk and creates a GFS2 filesystem.
+Python script that finds the 64 GB shared disk, partitions it, and creates a GFS2 filesystem.
 
 ```python
 #!/usr/bin/python
@@ -1512,8 +1492,7 @@ softdog
 ```
 
 ## node.config/node.stonith.config.sh
-Script configuring stonith device.
-Automates setup of STONITH fencing using SBD.
+Shell script that configures the STONITH fencing device using the SBD agent.
 
 ```bash
 sudo crm configure property stonith-timeout=144
@@ -1624,8 +1603,7 @@ DefaultTasksMax=4096
 ```
 
 ## outputs.tf
-Top level Terraform outputs.
-Collects outputs from other modules, such as the bastion IP and resource group.
+Outputs from the root Terraform module. They surface the bastion IP address and resource group name for the Ansible playbooks.
 
 ```hcl
 output "bastion_ip" {
@@ -1638,7 +1616,7 @@ output "rg" {
 ```
 
 ## ssh.config/ssh.config
-OpenSSH configuration disabling strict host checks.
+OpenSSH configuration used by the playbooks to disable strict host checks.
 Simplifies SSH access by disabling host key verification for automation.
 
 ```
